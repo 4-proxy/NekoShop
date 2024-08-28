@@ -7,25 +7,32 @@ assignees: 4-proxy
 
 ---
 
-## Report Title:
-Short description of the detected bug.
+## Report Title
 
-## Steps to reproduce the bug:
-- first;
-- second;
-...
+[Short description of the detected bug.]
 
-## Expected result:
-Expected behavior and the result of correct execution.
+## Steps to reproduce the bug
 
-## Actual result:
-What was obtained as a result of the bug.
+- [first];
+- [second];
+- [...]
 
-## Environment:
-Description of the working environment in which the bug was reproduced. (if necessary)
+## Expected result
 
-## Screenshots:
-Screenshots or other media that help illustrate the bug.
+[Expected behavior and the result of correct execution.]
 
-## Extras:
-Any other details that may be relevant, such as logs, error messages, or configurations.
+## Actual result
+
+[What was obtained as a result of the bug.]
+
+## Environment
+
+[Description of the working environment in which the bug was reproduced. (if necessary)]
+
+## Screenshots
+
+[Screenshots or other media that help illustrate the bug.]
+
+## Extras
+
+[Any other details that may be relevant, such as logs, error messages, or configurations.]

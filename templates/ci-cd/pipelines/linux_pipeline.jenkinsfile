@@ -1,5 +1,5 @@
 // author: 4-proxy
-// version: 0.1.0
+// version: 0.2.0
 
 
 pipeline{
@@ -85,7 +85,7 @@ pipeline{
                 echo '==========Check Configuration=========='
             }
 
-            post{
+            post {
                 success{
                     echo '=====+++++Check Configuratio Successfully+++++====='
                 }
@@ -105,9 +105,29 @@ pipeline{
                     }
                 }
 
+                post {
+                    success {
+                        echo '=====+++++Auro Testing Successfully+++++====='
+                    }
+                    failure {
+                        echo '=====-----Auto Testing Failure-----====='
+                        error('Auto Testing failed, pipeline is stopped!')
+                    }
+                }
+
                 stage('Manual Testing') {
                     steps {
                         echo '==========Manual Testing=========='
+                    }
+                }
+
+                post {
+                    success {
+                        echo '=====+++++Manual Testing Successfully+++++====='
+                    }
+                    failure {
+                        echo '=====-----Manual Testing Failure-----====='
+                        error('Manual Testing failed, pipeline is stopped!')
                     }
                 }
             }

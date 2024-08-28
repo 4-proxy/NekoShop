@@ -8,16 +8,21 @@ assignees: 4-proxy
 ---
 
 ## Report Title
-Description of the problem.
 
-## Correct expectations.
-Description of expected results that are not performed correctly in the problem.
-- first;
-- second;
-- ...
+[Description of the problem.]
 
-## Potential solutions.
-A description of possible ways to correct this inaccuracy.
-- first;
-- second;
-- ...
+## Correct expectations
+
+[Description of expected results that are not performed correctly in the problem.]  
+
+- [first];
+- [second];
+- [...]
+
+## Potential solutions
+
+[A description of possible ways to correct this inaccuracy.]  
+
+- [first];
+- [second];
+- [...]
