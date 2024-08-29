@@ -1,6 +1,7 @@
 // author: 4-proxy
-// version: 0.2.0
+// version: 0.3.0
 
+// Requirements for agent components: openjdk21, git.
 
 pipeline{
 
@@ -38,14 +39,44 @@ pipeline{
         }
 
         // --------------------------------------------------------------------
-        stage('GitHub clone') {
+        stage('Component Check') {
+            steps {
+                echo '==========Component Check=========='
+
+                sh '''
+                    java --version
+                    git --version
+                '''
+            }
+
+            post{
+                success{
+                    echo '=====+++++Component Check Successfully+++++====='
+                }
+                failure{
+                    echo '=====-----Component Check Failure-----====='
+                    error('Component check failed, pipeline is stopped.')
+                }
+            }
+        }
+
+        // --------------------------------------------------------------------
+        stage('GitHub Clone') {
             environment {
-                GitHub_URL = 'https://github.com/4-proxy/NekoShop.git'
-                Branch_URI = '/tree/Linux'
+                GITHUB_URL = 'https://github.com/4-proxy/NekoShop.git'
+                BRANCH_NAME = 'linux'
             }
 
             steps {
                 echo '==========GitHub Clone=========='
+
+                // Don't use it yet!
+                sh '''
+                    git clone --single-branch --branch ${BRANCH_NAME} --depth 1 ${GITHUB_URL} .
+                    find . -mindepth 1 -not -name 'templates' -not -name 'prototyping' -exec rm -rf {} +
+                '''
+
+                sh 'ls -la'
             }
 
             post{
@@ -103,15 +134,15 @@ pipeline{
                     steps {
                         echo '==========Auto Testing=========='
                     }
-                }
 
-                post {
-                    success {
-                        echo '=====+++++Auro Testing Successfully+++++====='
-                    }
-                    failure {
-                        echo '=====-----Auto Testing Failure-----====='
-                        error('Auto Testing failed, pipeline is stopped!')
+                    post {
+                        success {
+                            echo '=====+++++Auro Testing Successfully+++++====='
+                        }
+                        failure {
+                            echo '=====-----Auto Testing Failure-----====='
+                            error('Auto Testing failed, pipeline is stopped!')
+                        }
                     }
                 }
 
@@ -119,15 +150,15 @@ pipeline{
                     steps {
                         echo '==========Manual Testing=========='
                     }
-                }
 
-                post {
-                    success {
-                        echo '=====+++++Manual Testing Successfully+++++====='
-                    }
-                    failure {
-                        echo '=====-----Manual Testing Failure-----====='
-                        error('Manual Testing failed, pipeline is stopped!')
+                    post {
+                        success {
+                            echo '=====+++++Manual Testing Successfully+++++====='
+                        }
+                        failure {
+                            echo '=====-----Manual Testing Failure-----====='
+                            error('Manual Testing failed, pipeline is stopped!')
+                        }
                     }
                 }
             }
