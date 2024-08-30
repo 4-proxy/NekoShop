@@ -1,5 +1,5 @@
 // author: 4-proxy
-// version: 0.1.0
+// version: 0.1.1
 
 // Requirements for agent components: openjdk21, git, docker.
 
@@ -18,22 +18,24 @@ pipeline{
             steps {
                 echo  '==========Display Info=========='
 
-                echo 'Agent OS Info:'
-
                 sh '''
-                    hostname
-                    whoami
-                    uname -a
-                    pwd
+                    set +x
+
+                    echo Agent OS Info:
+                    echo Host: $(hostname)
+                    echo Username: $(whoami)
+                    echo System: $(uname -a)
+                    echo Current path: $(pwd)
                 '''
 
-                echo 'Pipeline Info:'
-
                 sh '''
-                    echo "Job name: $JOB_NAME"
-                    echo "Build number: $BUILD_NUMBER"
-                    echo "Build ID: $BUILD_ID"
-                    echo "Workspace path: $WORKSPACE"
+                    set +x
+
+                    echo Pipeline Info:
+                    echo Job name: $JOB_NAME
+                    echo Build number: $BUILD_NUMBER
+                    echo Build ID: $BUILD_ID
+                    echo Workspace path: $WORKSPACE
                 '''
             }
         }
@@ -71,10 +73,9 @@ pipeline{
             steps {
                 echo '==========GitHub Clone=========='
 
-                // Don't use it yet!
                 sh '''
                     git clone --single-branch --branch ${BRANCH_NAME} --depth 1 ${GITHUB_URL} .
-                    find . -mindepth 1 -not -name 'templates' -not -name 'prototyping' -exec rm -rf {} +
+                    find . -mindepth 1 -not -name 'code' -exec rm -rf {} +
                 '''
 
                 sh 'ls -la'

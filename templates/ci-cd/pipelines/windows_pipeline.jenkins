@@ -1,0 +1,192 @@
+// author: 4-proxy
+// version: 0.1.0
+
+// Requirements for agent components: openjdk21, git.
+
+pipeline{
+
+    agent {
+        label 'windows'
+    }
+
+    options {
+        disableResume()
+    }
+
+    stages {
+        stage('Display Info') {
+            steps {
+                echo  '==========Display Info=========='
+
+                bat '''
+                    @echo off
+                    for /f "delims=" %%i in ('ver') do set version=%%i
+
+                    echo Agent OS Info:
+                    echo Host: %COMPUTERNAME%
+                    echo Username: %USERNAME%
+                    echo System: %version% %OS% %PROCESSOR_ARCHITECTURE% %NUMBER_OF_PROCESSORS%
+                    echo Current path: %CD%
+                '''
+
+                bat '''
+                    @echo off
+
+                    echo Pipeline Info:
+                    echo Job name: %JOB_NAME%
+                    echo Build number: %BUILD_NUMBER%
+                    echo Build ID: %BUILD_ID%
+                    echo Workspace path: %WORKSPACE%
+                '''
+            }
+        }
+
+        // --------------------------------------------------------------------
+        stage('Component Check') {
+            steps {
+                echo '==========Component Check=========='
+
+                bat '''
+                    java --version
+                    git --version
+                '''
+            }
+
+            post{
+                success{
+                    echo '=====+++++Component Check Successfully+++++====='
+                }
+                failure{
+                    echo '=====-----Component Check Failure-----====='
+                    error('Component check failed, pipeline is stopped.')
+                }
+            }
+        }
+
+        // --------------------------------------------------------------------
+        stage('GitHub Clone') {
+            environment {
+                GITHUB_URL = 'https://github.com/4-proxy/NekoShop.git'
+                BRANCH_NAME = 'windows'
+            }
+
+            steps {
+                echo '==========GitHub Clone=========='
+
+                bat '''
+                    git clone --single-branch --branch %BRANCH_NAME% --depth 1 %GITHUB_URL% .
+                    find . -mindepth 1 -not -name 'code' -exec rm -rf {} +
+                '''
+
+                bat 'dir /q'
+            }
+
+            post{
+                success{
+                    echo '=====+++++GitHub Clone Successfully+++++====='
+                }
+                failure{
+                    echo '=====-----GitHub Clone Failure-----====='
+                    error('Cloning the repository failed, pipeline is stopped.')
+                }
+            }
+        }
+
+        // --------------------------------------------------------------------
+        stage('SetUp Configuration') {
+            options {
+                retry(1)
+            }
+
+            steps {
+                echo '==========SetUp Configuration=========='
+            }
+
+            post {
+                success {
+                    echo '=====+++++SetUp Configuration Successfully+++++====='
+                }
+                failure {
+                        echo '=====-----SetUp Configuration Failure-----====='
+                }
+            }
+        }
+
+        // ------------------------------------------------------------------
+        stage('Check Configuration') {
+            steps {
+                echo '==========Check Configuration=========='
+            }
+
+            post {
+                success{
+                    echo '=====+++++Check Configuratio Successfully+++++====='
+                }
+                failure{
+                    echo '=====-----Check Configuratio Failure-----====='
+                    error('The configuration check failed, pipeline is stopped!')
+                }
+            }
+        }
+
+        // ------------------------------------------------------------------
+        stage('Testing') {
+            parallel {
+                stage('Auto Testing') {
+                    steps {
+                        echo '==========Auto Testing=========='
+                    }
+
+                    post {
+                        success {
+                            echo '=====+++++Auro Testing Successfully+++++====='
+                        }
+                        failure {
+                            echo '=====-----Auto Testing Failure-----====='
+                            error('Auto Testing failed, pipeline is stopped!')
+                        }
+                    }
+                }
+
+                stage('Manual Testing') {
+                    steps {
+                        echo '==========Manual Testing=========='
+                    }
+
+                    post {
+                        success {
+                            echo '=====+++++Manual Testing Successfully+++++====='
+                        }
+                        failure {
+                            echo '=====-----Manual Testing Failure-----====='
+                            error('Manual Testing failed, pipeline is stopped!')
+                        }
+                    }
+                }
+            }
+        }
+
+        // ------------------------------------------------------------------
+        stage('Deploy Code') {
+            steps {
+                echo '==========Deploy Code=========='
+            }
+        }
+
+        // ------------------------------------------------------------------
+        stage('Notification') {
+            steps {
+                echo '==========Notification=========='
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs(
+                cleanWhenAborted: true,
+                cleanWhenFailure: true,
+                deleteDirs: true)
+        }
+    }
+}
