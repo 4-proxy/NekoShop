@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль `async_mysql_database` реализует класс,
-который предоставляет абстракцию для работы над базой данных СУБД-MySQL. 
+The `async_mysql_database` module implements a class,
+which provides an abstraction for working with a MySQL database. 
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __all__: list[str] = ["AsyncMySQLDataBase"]
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 from ..database_module.abstract_async_database import AbstractAsyncDataBase
 
@@ -28,20 +28,20 @@ class AsyncMySQLDataBase(
         AsyncMySQLAPI, AsyncMySQLConnectMethodType, AsyncMySQLConnectionType
     ]
 ):
-    """AsyncMySQLDataBase класс для представления БД СУБД-MySQL.
+    """AsyncMySQLDataBase class for representing a DBMS-MySQL database.
 
-    Этот класс используется для представления базы данных СУБД-MySQL.
-    Он предоставляет асинхронные методы для управления подключениями к БД и для интеграции API,
-    который будет использоваться для выполнения операций над БД.
+    This class is used to represent a DBMS-MySQL database.
+    It provides asynchronous methods for managing database connections and for API integration,
+    which will be used to perform operations on the database.
 
-    *Данная реализация родительского класса,
-    интерпретируется использованием пула соединений и одиночного/независимого соединения.
+    *This implementation of the parent class,
+    is interpreted using connection pooling and single/independent connection.
 
     Args:
-        AbstractAsyncDataBase: Базовый класс для реализации конкретного типа БД.
+        AbstractAsyncDataBase: Base class for implementing a specific type of database.
 
     Attributes:
-        __pool (AsyncMySQLConnectionPool): Активный пул соединений к БД.
+        __pool (AsyncMySQLConnectionPool): The active pool of connections to the database.
     """
 
     __pool: MySQLConnectionPool
@@ -55,18 +55,18 @@ class AsyncMySQLDataBase(
         pool_name: str = "mysql_pool",
         pool_size: int = 3,
     ) -> None:
-        """__init__ конструктор.
+        """__init__ constructor.
 
-        Инициализирует экземпляр класса AsyncMySQLDataBase.
+        Initializes an instance of the AsyncMySQLDataBase class.
 
         Args:
-            connect_method (AsyncMySQLConnectMethodType): Функция, используемая для независимого подключения к БД.
-            connection_data (Dict[str, str]): Данные для аутентификации соединений к БД.
-            api (AsyncMySQLAPI): Объект API для выполнения операций над БД.
-            pool_name (str, optional): Именной идентификатор пула соединений.
-                                       По умолчанию "mysql_pool".
-            pool_size (int, optional): Размер/количество доступных соединений пула.
-                                       По умолчанию 3.
+            connect_method (AsyncMySQLConnectMethodType): The function used to connect to the database independently.
+            connection_data (Dict[str, str]): Data used to authenticate connections to the database.
+            api (AsyncMySQLAPI): API object for performing operations on the database.
+            pool_name (str, optional): The name identifier of the connection pool.
+                                       The default is “mysql_pool”.
+            pool_size (int, optional): The size/number of available pool connections.
+                                       The default is 3.
         """
         super().__init__(
             connect_method=connect_method,
@@ -80,24 +80,24 @@ class AsyncMySQLDataBase(
 
     # -------------------------------------------------------------------------
     async def get_connect_method(self) -> AsyncMySQLConnectMethodType:
-        """get_connect_method возвращает функцию для одиночного соединения к БД.
+        """get_connect_method returns a function for a single connection to the database.
 
-        Этот метод возвращает функцию,
-        которая будет использована для подключения одиночного/независимого соединения к БД.
+        This method returns the function,
+        that will be used to connect a single/independent connection to the database.
 
         Returns:
-            AsyncMySQLConnectMethodType: Функция, используемая для подключения к БД.
+            AsyncMySQLConnectMethodType: The function used to connect to the database.
         """
         return self._connect_method
 
     # -------------------------------------------------------------------------
     async def create_connection_with_database(self) -> None:
-        """create_connection_with_database устанавливает независимое подключение к БД.
+        """create_connection_with_database establishes an independent connection to the database.
 
-        Этот метод создает отдельное/независимое от пула соединение,
-        используя закреплённые метод и данные.
+        This method creates a separate/independent connection from the pool,
+        using the assigned method and data.
 
-        *Установленное подключение сохраняется в атрибуте `_connection_with_database`.
+        *The established connection is stored in the `_connection_with_database` attribute.
         """
         connect_method: AsyncMySQLConnectMethodType = (
             await self.get_connect_method()
@@ -111,16 +111,16 @@ class AsyncMySQLDataBase(
 
     # -------------------------------------------------------------------------
     async def get_connection_with_database(self) -> AsyncMySQLConnectionType:
-        """get_connection_with_database возвращает объект независимого подключения к БД.
+        """get_connection_with_database returns an independent database connection object.
 
-        Этот метод возвращает объект текущего,
-        независимого от пула соединений, подключения к БД.
+        This method returns the object of the current,
+        database connection independent from the connection pool.
 
-        *Если соединение не было создано,
-        тогда вызвается соответствующий метод для создания подключения к БД.
+        *If the connection has not been created,
+        then the corresponding method is called to create the database connection.
 
         Returns:
-            AsyncMySQLConnectionType: Объект подключения к БД.
+            AsyncMySQLConnectionType: DB Connection Object.
         """
         if self._connection_with_database is None:
             await self.create_connection_with_database()
@@ -129,10 +129,10 @@ class AsyncMySQLDataBase(
 
     # -------------------------------------------------------------------------
     async def close_connection_with_database(self) -> None:
-        """close_connection_with_database закрывает текущее независимое подключение к БД.
+        """close_connection_with_database closes the current independent connection to the database.
 
-        Этот метод закрывает текущее независимое от пула соединений,
-        соединение к БД, тем самым обрывая независимое подключение к БД.
+        This method closes the current independent connection to the database from the connection pool,
+        connection to the database, thus terminating the independent connection to the database.
         """
         connection: AsyncMySQLConnectionType = (
             await self.get_connection_with_database()
@@ -142,11 +142,11 @@ class AsyncMySQLDataBase(
 
     # -------------------------------------------------------------------------
     async def connect_api_to_database(self) -> None:
-        """connect_api_to_database устанавливает подключение API к БД.
+        """connect_api_to_database sets up the API connection to the database.
 
-        Этот метод настраивает соединение API к БД,
-        передавая пул соединений и независимое соединение,
-        обеспечивая возможность API взаимодействовать над БД.
+        This method configures the API connection to the database,
+        passing a connection pool and an independent connection,
+        allowing the API to communicate over the database.
         """
         pool: MySQLConnectionPool = self.__pool
         connection_with_database: AsyncMySQLConnectionType = (

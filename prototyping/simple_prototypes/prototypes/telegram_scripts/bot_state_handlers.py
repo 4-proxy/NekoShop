@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль bot_state_handlers используяется для демонстрации работы
-обработчиков состояния бота.
-(Прямое использование данного модуля в разработке конечного продукта не предусмотренно)
+The bot_state_handlers module is used to demonstrate the operation of bot state handlers.
+bot state handlers.
+(Direct use of this module in the development of the final product is not provided).
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __all__: list[str] = ["on_start_bot", "on_stop_bot", "_current_state"]
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 # ____________________________________________________________________________

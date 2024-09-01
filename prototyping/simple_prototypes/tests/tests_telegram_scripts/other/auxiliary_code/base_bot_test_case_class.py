@@ -11,10 +11,10 @@ from ..config import TestCaseConfig as Config
 
 # ____________________________________________________________________________
 class BaseBotTestCase(unittest.IsolatedAsyncioTestCase):
-    """BaseTestCase базовый класс, для тестирования функциональности бота.
+    """BaseTestCase base class, for testing bot functionality.
 
-    Базовый класс избавляющий от дублирования кода в настройках тестовых случаев,
-    обеспечивает простой настройкой и подготовкой к запуску бота.
+    The base class eliminates code duplication in test case settings,
+    provides simple configuration and preparation for bot launch.
     """
 
     @classmethod

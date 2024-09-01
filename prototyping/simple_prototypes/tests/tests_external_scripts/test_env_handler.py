@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль test_env_handler представляет из себя набор модульных тестов,
-для тестирования компонентов модуля env_handler.
+The test_env_handler module is a set of unit tests,
+for testing the components of the env_handler module.
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 import unittest
 import os
@@ -37,7 +37,7 @@ class TestLoadEnvFilePositive(unittest.TestCase):
             PATH_TO_TEST_DIR, TEST_DATA_DIR_NAME, "empty.env"
         )
 
-        # Пары должны соответствовать парам в файле
+        # Pairs must match those in the file
         cls.expected_env_file_key_values: Dict[str, Any] = {
             "FIRST_KEY": "1010",
             "SECOND_KEY": "Banana",

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль manual_test_bot_inline_keyboard_handler представляет из себя ручной тест,
-для тестирования компонентов модуля bot_inline_keyboard_handler.
+The manual_test_bot_inline_keyboard_handler module is a manual test,
+to test components of the bot_inline_keyboard_handler module.
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 import asyncio
 
@@ -39,8 +39,8 @@ class TestStartCommand(BaseBotTestCase):
     # -------------------------------------------------------------------------
     async def test_successfully_activated_handler(self) -> None:
         """
-        Для успешного прохождения теста, требуется - после запуска бота,
-        лично кликнуть/нажать на кнопку, прикреплённую к сообщению от бота.
+        To successfully pass the test, it is required - after launching the bot,
+        personally click/press the button attached to the message from the bot.
         """
 
         print(self.test_successfully_activated_handler.__doc__)
@@ -55,7 +55,7 @@ class TestStartCommand(BaseBotTestCase):
                     test_task,
                     self.bot.send_message(
                         chat_id=TestCaseConfig.CHAT_ID,
-                        text="Тестирование Inline клавиатуры.",
+                        text="Inline keyboard testing.",
                         reply_markup=keyboard_builder.as_markup(),
                     ),
                 )

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль test_bot_handler представляет из себя набор модульных тестов,
-для тестирования компонентов модуля bot_handler.
+The test_bot_handler module is a set of unit tests,
+for testing components of the bot_handler module.
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
@@ -92,7 +92,7 @@ class TestConfigureBotNegative(unittest.IsolatedAsyncioTestCase):
     def setUpClass(cls) -> None:
         unittest.IsolatedAsyncioTestCase.setUpClass()
 
-        cls.invalid_bot_token: str = "15657273zdgfohgw"  # Формат токена не корректный
+        cls.invalid_bot_token: str = "15657273zdgfohgw"  # Token format is not correct
 
     # -------------------------------------------------------------------------
     async def test_invalid_bot_token_raise_TokenValidationError(self) -> None:

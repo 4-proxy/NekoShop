@@ -11,13 +11,13 @@ from .auxiliary_code.load_and_get_env_key_value import (
 from dataclasses import dataclass
 
 
-# Переменные связаные с конфигурацией
+# Configuration-related variables
 PATH_TO_TEST_DATA_DIR: str = os.path.dirname(p=__file__)
 TEST_DATA_DIR_NAME: str = "test_data"
 ENV_FILE_NAME_WITH_API_TOKEN_BOT: str = "bot_token.env"
 ENV_FILE_NAME_WITH_TELEGRAM_CHAT_ID: str = "telegram_chat_id.env"
 
-# Полные пути к файлам конфигурации
+# Full paths to configuration files
 FULL_PATH_TO_ENV_FILE_WITH_API_TOKEN_BOT: str = os.path.join(
     PATH_TO_TEST_DATA_DIR,
     TEST_DATA_DIR_NAME,

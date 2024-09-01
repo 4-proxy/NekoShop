@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль `async_sql_database_api` предоставляет общий интерфейс,
-который определяет методы для реализации API для конкретных типов БД,
-используя одиночное асинхронное соединение.
+The `async_sql_database_api` module provides a generic interface,
+which defines methods to implement APIs for specific database types,
+using a single asynchronous connection.
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __all__: list[str] = ["AsyncSQLDataBaseAPI"]
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 from abc import ABC, abstractmethod
 
@@ -22,57 +22,57 @@ from string import Template
 
 # _____________________________________________________________________________
 class AsyncSQLDataBaseAPI[ConnectionType](ABC):
-    """AsyncSQLDataBaseAPI интерфейс для реализации API для работы над БД.
+    """AsyncSQLDataBaseAPI interface to implement an API for working on the database.
 
-    Этот класс предоставляет интерфейс,
-    содержащий набор асинхронных методов для реализации конкретных типов API,
-    предназначенных для выполнения операций над определёнными типами БД.
+    This class provides an interface,
+    containing a set of asynchronous methods for implementing specific API types,
+    designed to perform operations on specific database types.
 
-    *Интерфейс предпологает работу над одним соединением обеспечивающим подключение к БД.
-    Данное соединение, должно поддерживать асинхронность.
+    *The interface assumes working on a single connection providing connection to the database.
+    This connection must support asynchrony.
 
     Args:
-        ABC: Базовый класс для создания абстрактных классов,
-             позволяющий реализовать абстракцию.
+        ABC: A base class for creating abstract classes,
+             allowing to realize abstraction.
     """
 
     @abstractmethod
     async def set_connection_with_database(
         self, connection: ConnectionType
     ) -> None:
-        """set_connection_with_database устанавливает соединение к БД для API.
+        """set_connection_with_database sets the connection to the database for the API.
 
-        Этот метод должен устанавливать полученное соединение к БД,
-        в соответствующий атрибут API, который отвечает за хранение соединения.
+        This method must set the received connection to the database,
+        to the appropriate API attribute that is responsible for storing the connection.
 
         Args:
-            connection (ConnectionType): Объект соединения к БД.
+            connection (ConnectionType): The object of the connection to the database.
         """
         pass
 
     # -------------------------------------------------------------------------
     @abstractmethod
     async def get_connection_with_database(self) -> ConnectionType:
-        """get_connection_with_database возвращает подключение к БД.
+        """get_connection_with_database returns the connection to the database.
 
-        Этот метод должен возвращать объект соединения,
-        который обеспечивает подключение к БД и позволит API выполнять манипуляции над БД.
+        This method should return a connection object,
+        which provides a connection to the database and will allow the API to perform manipulations on the database.
 
         Returns:
-            ConnectionType: Объект соединения к БД.
+            ConnectionType: Database Connection Object.
         """
         pass
 
     # -------------------------------------------------------------------------
     @abstractmethod
     async def check_connection_with_database(self) -> bool:
-        """check_connection_with_database проверяет активность подключения к БД.
+        """check_connection_with_database checks for database connection activity.
 
-        Этот метод должен производить проверку, которая определит,
-        активно ли текущее подключение к БД.
+        This method should perform a check that determines,
+        whether the current connection to the database is active.
 
         Returns:
-            bool: True, если соединение активно; иначе False.
+            bool: True if the connection is active; otherwise False.
         """
         pass
 
@@ -81,13 +81,13 @@ class AsyncSQLDataBaseAPI[ConnectionType](ABC):
     async def execute_sql_query_to_database(
         self, query_template: Template, query_data: Dict[str, str]
     ) -> None:
-        """execute_sql_query_to_database выполняет запрос к БД.
+        """execute_sql_query_to_database executes a query against a database.
 
-        Этот метод должен выполнять запрос к подключённой БД.
-        Получая запрос в виде строки и данные для подстановки в запрос.
+        This method should execute a query against the connected database.
+        Getting the query as a string and the data to substitute into the query.
 
         Args:
-            query_template (Template): Шаблон запроса.
-            query_data (Dict[str, str]): Данные для подстановки в запрос.
+            query_template (Template): query_template.
+            query_data (Dict[str, str]): The data to substitute into the query.
         """
         pass

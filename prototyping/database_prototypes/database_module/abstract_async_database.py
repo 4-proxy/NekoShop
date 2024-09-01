@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль `abstract_async_database` предоставляет базовый абстрактный класс,
-который будет представлять базу данных.
+The `abstract_async_database` module provides a base abstract class,
+which will represent the database.
 
-Конкретные реализации базы данных будут наследоваться от этого абстрактного класса
-и реализовывать методы для работы над определенной БД (СУБД).
+Specific database implementations will inherit from this abstract class
+and implement methods to work on a particular database (DBMS).
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __all__: list[str] = ["AbstractAsyncDataBase"]
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 from abc import ABC, abstractmethod
 
@@ -23,26 +23,26 @@ from typing import Any, Dict, Optional
 
 # _____________________________________________________________________________
 class AbstractAsyncDataBase[APIType, ConnectMethodType, ConnectionType](ABC):
-    """AbstractAsyncDataBase класс для представления базы данных.
+    """AbstractAsyncDataBase class for representing a database.
 
-    Этот класс служит основой для реализации конкретных классов,
-    поддерживающих подключение к определённому типу базы данных.
-    Он определяет методы и атрибуты, которые должны быть
-    реализованы в производных классах для работы над конкретными типами БД (СУБД).
+    This class serves as the basis for the implementation of specific classes,
+    that support connection to a particular type of database.
+    It defines methods and attributes that must be
+    implemented in derived classes to work on specific database types (DBMS).
 
-    *Класс не должен поддерживать прямое взаимодействие над БД,
-    для этого должен быть реализован и подключён API.
+    *The class must not support direct interaction over the database,
+    for this purpose an API must be implemented and connected.
 
     Args:
-        ABC: Базовый класс для создания абстрактных классов,
-             позволяющий реализовать абстракцию.
+        ABC: Base class for creating abstract classes,
+             allowing to implement abstraction.
 
     Attributes:
-        _connection_data (Dict[str, Any]): Данные, необходимые для установки соединения к БД.
-        _connect_method (ConnectMethodType): Функция, используемая для установки соединения к БД.
-        _connection_with_database (Optional[ConnectionType]): Объект, представляющий текущее подключение к БД.
-                                                              По умолчанию None.
-        api (APIType): Объект, реализующий API для работы над конкретным типом БД.
+        _connection_data (Dict[str, Any]): The data required to establish a connection to the database.
+        _connect_method (ConnectMethodType): The function used to establish a connection to the database.
+        _connection_with_database (Optional[ConnectionType]): An object representing the current connection to the database.
+                                                              Defaults to None.
+        api (APIType): An object that implements an API for working on a specific database type.
     """
 
     _connection_data: Dict[str, Any]
@@ -57,12 +57,12 @@ class AbstractAsyncDataBase[APIType, ConnectMethodType, ConnectionType](ABC):
         connection_data: Dict[str, Any],
         api: APIType,
     ) -> None:
-        """__init__ конструктор.
+        """__init__ constructor.
 
         Args:
-            connect_method (ConnectMethodType): Функция, используемая для установки соединения к БД.
-            connection_data (Dict[str, str]): Данные для настройки подключения.
-            api (APIType): Объект, реализующий API для определённого типа БД.
+            connect_method (ConnectMethodType): The function used to establish a connection to the database.
+            connection_data (Dict[str, str]): The data used to set up the connection.
+            api (APIType): An object that implements an API for a particular database type.
         """
         self._connect_method = connect_method
         self._connection_data = connection_data
@@ -71,59 +71,59 @@ class AbstractAsyncDataBase[APIType, ConnectMethodType, ConnectionType](ABC):
     # -------------------------------------------------------------------------
     @abstractmethod
     async def get_connect_method(self) -> ConnectMethodType:
-        """get_connect_method возвращает функцию для подключения к БД.
+        """get_connect_method returns a function to connect to the database.
 
-        Этот метод должен возвращать функцию,
-        которая будет использована для установки соединения к БД.
+        This method must return a function,
+        that will be used to establish a connection to the database.
 
         Returns:
-            ConnectMethodType: Функция для подключения к БД.
+            ConnectMethodType: The function to connect to the database.
         """
         pass
 
     # -------------------------------------------------------------------------
     @abstractmethod
     async def create_connection_with_database(self) -> None:
-        """create_connection_with_database устанавливает соединение к БД.
+        """create_connection_with_database establishes a connection to the database.
 
-        Этот метод должен устанавливать соединение к БД,
-        используя метод и данные для создания подключения.
+        This method must establish a connection to the database,
+        using the method and data to create the connection.
 
-        *Установленное подключение следует присвоить соответствующему атрибуту.
+        *The established connection should be assigned to the appropriate attribute.
         """
         pass
 
     # -------------------------------------------------------------------------
     @abstractmethod
     async def get_connection_with_database(self) -> ConnectionType:
-        """get_connection_with_database возвращает объект подключения к БД.
+        """get_connection_with_database returns a database connection object.
 
-        Этот метод должен возвращать объект подключения к БД.
+        This method must return a database connection object.
 
-        *Если подключение не было установленно до вызова данного метода,
-        следует вызвать метод для создания подключения.
+        *If the connection has not been established before calling this method,
+        the method should be called to establish the connection.
 
         Returns:
-            ConnectionType: Объект подключения к БД.
+            ConnectionType: database connection object.
         """
         pass
 
     # -------------------------------------------------------------------------
     @abstractmethod
     async def close_connection_with_database(self) -> None:
-        """close_connection_with_database закрывает текущее соединение к БД.
+        """close_connection_with_database closes the current database connection.
 
-        Этот метод должен закрывать текущее подключение к БД,
-        которое присвоено соответствующему атрибуту.
+        This method must close the current database connection,
+        which is assigned to the corresponding attribute.
         """
         pass
 
     # -------------------------------------------------------------------------
     @abstractmethod
     async def connect_api_to_database(self) -> None:
-        """connect_api_to_database устанавливает подключение API к БД.
+        """connect_api_to_database establishes the API connection to the database.
 
-        Этот метод должен настраивать соединение установленного API к БД,
-        вызывая соответствующий метод API для настройки.
+        This method should configure the connection of the installed API to the database,
+        by calling the appropriate API method to configure it.
         """
         pass

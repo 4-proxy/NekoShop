@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль env_handler используется для обработки файлов настройки окружения (.env),
-обеспечивая загрузку пар - [ключ : значение] в виртуальное окружение и предоставляя
-дополнительный функционал для взаимодействия над загруженными парами.
+The env_handler module is used to process environment configuration (.env) files,
+to load [key : value] pairs into the virtual environment and provide additional functionality to interact with the loaded pairs.
+additional functionality for interacting with the loaded pairs.
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __all__: list[str] = [
@@ -16,7 +16,7 @@ __all__: list[str] = [
 ]
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 import os
 import dotenv
@@ -26,64 +26,64 @@ from typing import Union
 
 # ----------------------------------------------------------------------------
 def load_env_file(filepath: str) -> bool:
-    """load_env_file загружает '.env' файл в окружение.
+    """load_env_file loads an '.env' file into the environment.
 
-    Функция загружает пары - [ключ : значение] из файла имеющего расширение '.env',
-    в текущее виртуальное окружение системы.
+    The function loads [key : value] pairs from a file with the extension '.env',
+    into the current virtual environment of the system.
 
     Args:
-        filepath (str): путь к '.env' файлу.
+        filepath (str): path to the '.env' file.
 
     Raises:
-        FileNotFoundError: Возбуждается если файл не существует.
+        FileNotFoundError: Raises if the file does not exist.
 
     Returns:
-        bool: Были ли загружены ключи в виртуальное окружение?
+        bool: Have keys been loaded into the virtual environment?
     """
     if not os.path.exists(filepath):
-        raise FileNotFoundError(f"Файл не обнаружен по указанному пути: {filepath}")
+        raise FileNotFoundError(f"File not found at the specified path: {filepath}")
 
     return dotenv.load_dotenv(dotenv_path=filepath)
 
 
 # ----------------------------------------------------------------------------
 def get_key_value_from_environment(key: str) -> str:
-    """get_key_value_from_environment возвращает значение ключа из окружения.
+    """get_key_value_from_environment returns the key value from the environment.
 
-    Функция обращается к текущему виртуальному окружению,
-    для получения значения по запрашиваемому ключу.
+    The function accesses the current virtual environment,
+    to get the value for the requested key.
 
     Args:
-        key (str): запрашиваемый ключ из окружения.
+        key (str): the requested key from the environment.
 
     Raises:
-        ValueError: Возбуждается если ключ не принадлежит окружению.
+        ValueError: Raises if the key does not belong to the environment.
 
     Returns:
-        str: полученное значению, по запрошенному ключу.
+        str: the received value, based on the requested key.
     """
     value: Union[str, None] = os.environ.get(key)
 
     if value is None:
-        raise KeyError(f"Ключ {key} не существует в текущем окружении!")
+        raise KeyError(f"The {key} key does not exist in the current environment!")
 
     return value
 
 
 # ----------------------------------------------------------------------------
 def normalize_env_value_type(env_value: str) -> Union[str, int, bool]:
-    """normalize_env_value_type нормализует тип данных в строке.
+    """normalize_env_value_type normalizes the type of data in the string.
 
-    Функция определяет тип данных содержащихся в строке,
-    в следствии чего возвращает значение используя корректный тип данных.
+    The function determines the type of data contained in the string,
+    and then returns the value using the correct data type.
 
-    *При получении значения ключа из виртуального окружения, тип данных является строкой.
+    *When getting the key value from the virtual environment, the data type is a string.
 
     Args:
-        env_value (str): строка для нормализации.
+        env_value (str): string to normalize.
 
     Returns:
-        Union[str, int, bool]: Поддерживаемые типы для нормализации.
+        Union[str, int, bool]: Supported types for normalization.
     """
     if env_value.isdigit():
         return int(env_value)

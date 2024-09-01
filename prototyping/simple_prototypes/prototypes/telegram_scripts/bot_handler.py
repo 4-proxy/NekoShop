@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль bot_handler используется для обработки, включая настройку требуемых компонентов,
-для запуска telegram бота.
+The bot_handler module is used for processing, including customization of required components,
+to run the telegram bot.
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __all__: list[str] = ["create_dispatcher", "configure_bot", "run_bot"]
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 from aiogram import Dispatcher, Bot
 
@@ -23,13 +23,13 @@ from typing import Any
 
 # ----------------------------------------------------------------------------
 async def create_dispatcher(**kwargs: Any) -> Dispatcher:
-    """create_dispatcher создаёт экземпляр aiogram.Dispatcher.
+    """create_dispatcher creates an instance of aiogram.Dispatcher.
 
-    Функция используется для создания диспатчера,
-    который в дальнейшем будет использован для запуска telegram бота.
+    The function is used to create a dispatcher,
+    which will be used to run the telegram bot.
 
     Returns:
-        Dispatcher: Настроенный экземпляр диспатчера.
+        Dispatcher: A customized instance of Dispatcher.
     """
     telegram_dispatcher: Dispatcher = Dispatcher(**kwargs)
 
@@ -43,19 +43,19 @@ async def configure_bot(
         parse_mode=ParseMode.HTML
     ),
 ) -> Bot:
-    """configure_bot создаёт экземпляр aiogram.Bot.
+    """configure_bot creates an instance of aiogram.Bot.
 
-    Функция используется для настройки и создания экземпляра telegram бота,
-    который в дальнейшем будет передан диспатчеру для запуска.
+    The function is used to configure and create an instance of telegram bot,
+    which will be passed to the dispatcher for launching.
 
-    *Если токен бота будет не авторизован в telegram, функция не возбудит исключение.
+    *If the bot token is not authorized in telegram, the function will not raise an exception.
 
     Args:
-        bot_token (str): Токен бота.
-        default_param (DefaultBotProperties, optional): Ключевые параметры для инициализации бота.
+        bot_token (str): Bot token.
+        default_param (DefaultBotProperties, optional): Key parameters for bot initialization.
 
     Returns:
-        Bot: Настроенный экземпляр бота.
+        Bot: The customized bot instance.
     """
     bot = Bot(token=bot_token, default=default_param)
 
@@ -64,13 +64,13 @@ async def configure_bot(
 
 # ----------------------------------------------------------------------------
 async def run_bot(bot: Bot, dispatcher: Dispatcher) -> None:
-    """run_bot запускает telegram бота в онлайн.
+    """run_bot launches a telegram bot online.
 
-    Функция используется для инициирования запуска telegram бота,
-    используя диспатчер и экземпляр бота.
+    The function is used to initiate the launch of a telegram bot,
+    using the dispatcher and bot instance.
 
     Args:
-        bot (Bot): Настроенный экземпляр aiogram.Bot.
-        dispatcher (Dispatcher): Настроенный экземпляр aiogram.Dispatcher.
+        bot (Bot): A customized instance of aiogram.Bot.
+        dispatcher (Dispatcher): A customized instance of aiogram.Dispatcher.
     """
     await dispatcher.start_polling(bot)  # type: ignore

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль предназначен для хранения кастомных типов,
-для обеспечения корректной аннотации в используемом коде.
+The module is designed to store custom types,
+to ensure correct annotation in the code used.
 """
 
 __all__: list[str] = [
@@ -19,13 +19,13 @@ from mysql.connector.aio.connection import MySQLConnection
 from mysql.connector.aio.abstracts import MySQLConnectionAbstract
 
 
-# Аннотация для типа независимого асинхронного соединения к MySQL.
+# Annotation for the type of independent asynchronous connection to MySQL.
 AsyncMySQLConnectionType = Union[MySQLConnection, MySQLConnectionAbstract]
 
-# Аннотация для функции, используемой для установки асинхронного соединения к MySQL.
+# Annotation for the function used to establish an asynchronous connection to MySQL.
 AsyncMySQLConnectMethodType = Callable[
     ..., Coroutine[Any, Any, AsyncMySQLConnectionType]
 ]
 
-# Аннотация для типа соединения из пула к MySQL.
+# Annotation for the connection type from the pool to MySQL.
 MySQLPooledConnection = Union[PooledMySQLConnection, CMySQLConnection]

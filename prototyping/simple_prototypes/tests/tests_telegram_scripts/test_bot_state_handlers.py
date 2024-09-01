@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль test_bot_state_handlers представляет из себя набор модульных тестов,
-для тестирования компонентов модуля bot_state_handlers.
+The test_bot_state_handlers module is a set of unit tests,
+for testing components of the bot_state_handlers module.
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 import asyncio
 

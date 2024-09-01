@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 """
-Модуль manual_test_bot_start_command_handler представляет из себя ручной тест,
-для тестирования компонентов модуля bot_start_command_handler.
+The manual_test_bot_start_command_handler module is a manual test,
+to test components of the bot_start_command_handler module.
 
 Copyright 2024 4-proxy
-Лицензия Apache, версия 2.0 (Apache-2.0 license)
+Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
@@ -37,8 +37,8 @@ class TestStartCommand(BaseBotTestCase):
     # -------------------------------------------------------------------------
     async def test_successfully_activated_handler(self) -> None:
         """
-        Для успешного прохождения теста, требуется - после запуска бота,
-        лично написать в общем чате команду: `/start`, в следствии этого бот должен будет её обработать.
+        To successfully pass the test, it is required - after launching the bot,
+        personally write in the general chat command: `/start`, after that the bot will have to process it.
         """
 
         print(self.test_successfully_activated_handler.__doc__)
