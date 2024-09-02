@@ -1,5 +1,6 @@
 __pycache__
 bot_token.env
+bot_token.py
 telegram_chat_id.env
 MainDataBaseModel.mwb.bak
 .venv
