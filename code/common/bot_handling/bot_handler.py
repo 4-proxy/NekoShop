@@ -10,7 +10,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 __all__: list[str] = ["create_dispatcher", "create_bot", "run_bot"]
 
 __author__ = "4-proxy"
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 from aiogram import Dispatcher, Bot
 
@@ -24,9 +24,8 @@ async def create_dispatcher(**kwargs: Any) -> Dispatcher:
 
     return dispatcher
 
+
 # ----------------------------------------------------------------------------
-
-
 async def create_bot(api_token: str,
                      parse_mode: ParseMode = ParseMode.HTML) -> Bot:
     bot = Bot(token=api_token)
@@ -35,8 +34,7 @@ async def create_bot(api_token: str,
 
     return bot
 
+
 # ----------------------------------------------------------------------------
-
-
-async def run_bot() -> None:
-    pass
+async def run_bot(*, bot: Bot, dispatcher: Dispatcher) -> None:
+    await dispatcher.start_polling(bot)  # type: ignore

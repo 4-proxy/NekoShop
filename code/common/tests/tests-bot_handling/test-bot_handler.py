@@ -10,15 +10,16 @@ Apache license, version 2.0 (Apache-2.0 license)
 __all__: list[str] = []
 
 __author__ = "4-proxy"
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 import unittest
 
 import aiogram
+import asyncio
 
 from bot_handling import bot_handler
 
-from typing import Dict, Union, Any, Optional
+from typing import Dict, Any, Optional
 
 
 # _____________________________________________________________________________
@@ -58,16 +59,14 @@ class TestCreateDispatcherPositive(unittest.IsolatedAsyncioTestCase):
         from random import randint
 
         # Build
-        test_data: Dict[str, Union[str, bool, int]] = {
+        test_data: Dict[str, Any] = {
             "author_name": "4-proxy",
             "debug_mode": True,
             "random_int_number": randint(a=0, b=999)
         }
 
         # Operate
-        dispatcher: aiogram.Dispatcher = await self.tested_function(
-            **test_data
-        )
+        dispatcher: aiogram.Dispatcher = await self.tested_function(**test_data)
 
         # Check
         workflow: Dict[str, Any] = dispatcher.workflow_data
@@ -105,7 +104,7 @@ class TestCreateBotPositive(unittest.IsolatedAsyncioTestCase):
 
     # -------------------------------------------------------------------------
     async def test_returned_object_is_aiogram_Bot(self) -> None:
-        # Operate
+        # Build
         bot: aiogram.Bot = await self.tested_function(api_token=self._bot_api_token)
 
         # Check
@@ -166,14 +165,10 @@ class TestCreateBotNegative(unittest.IsolatedAsyncioTestCase):
         self.tested_function = bot_handler.create_bot
 
     # -------------------------------------------------------------------------
-    @unittest.expectedFailure
-    async def test_call_without_arguments(self) -> None:
-        bot: aiogram.Bot = await self.tested_function()
-
-    # -------------------------------------------------------------------------
-    async def test_invalid_api_token_raise_TokenValidationError(self) -> None:
+    async def test_invalid_api_token_format_raise_TokenValidationError(
+            self) -> None:
         """
-        This check ensures the format of the string is correct.
+        This check ensures the format of the API token string is correct.
 
         If it is not the `*:*` format, an exception `TokenValidationError` must be raised.
         If the token is in the `*:*` format but not valid in Telegram, it will be accepted.
@@ -186,4 +181,35 @@ class TestCreateBotNegative(unittest.IsolatedAsyncioTestCase):
 
         # Check
         with self.assertRaises(expected_exception=TokenValidationError):
-            bot: aiogram.Bot = await self.tested_function(api_token=invalid_api_token)
+            await self.tested_function(api_token=invalid_api_token)
+
+
+# _____________________________________________________________________________
+class TestRunBotPositive(unittest.IsolatedAsyncioTestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        from .test_data.bot_token import TOKEN
+
+        super().setUpClass()
+
+        cls._bot_api_token: str = TOKEN
+
+    # -------------------------------------------------------------------------
+    async def asyncSetUp(self) -> None:
+        await super().asyncSetUp()
+
+        self.tested_function = bot_handler.run_bot
+
+    # -------------------------------------------------------------------------
+    async def test_successful_bot_launch(self) -> None:
+        # Build
+        async with aiogram.Bot(token=self._bot_api_token) as test_bot:
+            test_dispatcher = aiogram.Dispatcher()
+
+            # Check
+            with self.assertRaises(expected_exception=asyncio.TimeoutError):
+                async with asyncio.timeout(delay=10):
+
+                    # Operate
+                    await self.tested_function(bot=test_bot,
+                                               dispatcher=test_dispatcher)
