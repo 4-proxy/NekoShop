@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-description
+Module `test-bot_handler`, a set of test cases used to control the performance
+and quality of the `bot_handler` module components.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
@@ -10,7 +11,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 __all__: list[str] = []
 
 __author__ = "4-proxy"
-__version__ = "0.4.0"
+__version__ = "1.0.0"
 
 import unittest
 
@@ -166,7 +167,8 @@ class TestCreateBotNegative(unittest.IsolatedAsyncioTestCase):
         self.tested_function = bot_handler.create_bot
 
     # -------------------------------------------------------------------------
-    async def test_invalid_api_token_format_raise_TokenValidationError(self) -> None:
+    async def test_invalid_api_token_format_raise_TokenValidationError(
+            self) -> None:
         """
         This test ensures the format of the API token string is correct/valid.
 
@@ -182,7 +184,7 @@ class TestCreateBotNegative(unittest.IsolatedAsyncioTestCase):
         # Check
         with self.assertRaises(expected_exception=TokenValidationError):
 
-            #Operate
+            # Operate
             await self.tested_function(api_token=invalid_api_token)
 
 
@@ -219,16 +221,17 @@ class TestRunBotPositive(unittest.IsolatedAsyncioTestCase):
                                                dispatcher=test_dispatcher)
 
     # -------------------------------------------------------------------------
-    async def test_function_accept_aiogram_Bot_and_Dispatcher_as_key_parameters(self) -> None:
+    async def test_function_accept_aiogram_Bot_and_Dispatcher_as_key_parameters(
+            self) -> None:
         # Build
         bot = aiogram.Bot(token=self._invalid_api_token)
         dispatcher = aiogram.Dispatcher()
-        
+
         # Check
         with self.assertRaises(expected_exception=TypeError):
 
             # Operate
-            await self.tested_function(bot, dispatcher) # type: ignore
+            await self.tested_function(bot, dispatcher)  # type: ignore
 
 
 # _____________________________________________________________________________
@@ -236,7 +239,7 @@ class TestRunBotNegative(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        
+
         cls._invalid_api_token = "0000:xxxx"
 
     # -------------------------------------------------------------------------
@@ -246,9 +249,10 @@ class TestRunBotNegative(unittest.IsolatedAsyncioTestCase):
         self.tested_function = bot_handler.run_bot
 
     # -------------------------------------------------------------------------
-    async def test_invalid_api_token_raise_TelegramUnauthorizedError(self) -> None:
+    async def test_invalid_api_token_raise_TelegramUnauthorizedError(
+            self) -> None:
         from aiogram.exceptions import TelegramUnauthorizedError
-        
+
         # Build
         test_bot = aiogram.Bot(token=self._invalid_api_token)
         test_dispatcher = aiogram.Dispatcher()
@@ -256,6 +260,6 @@ class TestRunBotNegative(unittest.IsolatedAsyncioTestCase):
         # Check
         with self.assertRaises(expected_exception=TelegramUnauthorizedError):
 
-                # Operate
-                await self.tested_function(bot=test_bot,
-                                            dispatcher=test_dispatcher)
+            # Operate
+            await self.tested_function(bot=test_bot,
+                                       dispatcher=test_dispatcher)
