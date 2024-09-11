@@ -10,7 +10,9 @@ Apache license, version 2.0 (Apache-2.0 license)
 __all__: list[str] = []
 
 __author__ = "4-proxy"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
+
+import aiogram
 
 from ..common.bot_handling.bot_handler import *
 from ..common.bot_handling.bot_state_handler import *
@@ -31,8 +33,8 @@ async def configure_WorkflowIntermediary() -> None:
 async def main() -> NoReturn:
     await configure_WorkflowIntermediary()
 
-    telegram_bot = WorkflowIntermediary.current_bot
-    telegram_dispatcher = await create_dispatcher()
+    telegram_bot: aiogram.Bot = WorkflowIntermediary.current_bot
+    telegram_dispatcher: aiogram.Dispatcher = await create_dispatcher()
 
     telegram_dispatcher.startup.register(callback=on_startup)
     telegram_dispatcher.shutdown.register(callback=on_shutdown)

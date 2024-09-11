@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 """
-description
+Module `test-bot_state_handler`, a set of test cases used to control the performance
+and quality of the `bot_state_handler` module components.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 import unittest
 
@@ -21,7 +22,7 @@ from ...bot_handling import bot_state_handler
 class TestBotStateHandler(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        from ...workflow_intermediary import WorkflowIntermediary
+        from ...workflow_intermediary import WorkflowIntermediary  # Heavy dependence
 
         super().setUpClass()
 
