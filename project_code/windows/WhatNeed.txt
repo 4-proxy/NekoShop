@@ -1,0 +1,2 @@
+`project_config.json` - A `.json` file containing data for software configuration.
+(The template can be found from the root directory of the project: `./templates/project_configuration/JSON_config_template.json`)

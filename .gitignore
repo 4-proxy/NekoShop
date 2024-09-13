@@ -5,3 +5,4 @@ telegram_chat_id.env
 MainDataBaseModel.mwb.bak
 .venv
 config.py
+project_config.json

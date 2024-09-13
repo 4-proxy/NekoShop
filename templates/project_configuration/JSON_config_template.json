@@ -1,0 +1,7 @@
+{
+    "Bot": {
+        "API_TOKEN": "your_api_token",
+        "OWNER_CHAT_ID": "owner_chat_id_of_telegram",
+        "DEBUG": true
+    }
+}

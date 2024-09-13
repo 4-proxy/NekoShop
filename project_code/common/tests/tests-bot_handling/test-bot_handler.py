@@ -11,7 +11,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 __all__: list[str] = []
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 import unittest
 
@@ -52,7 +52,7 @@ class TestCreateDispatcherPositive(unittest.IsolatedAsyncioTestCase):
         self.assertIsInstance(
             obj=dispatcher,
             cls=aiogram.Dispatcher,
-            msg=f"Failure! Inspected object is not instance of aiogram.Dispatcher!"
+            msg="Failure! Inspected object is not instance of aiogram.Dispatcher!"
         )
 
     # -------------------------------------------------------------------------
@@ -77,10 +77,8 @@ class TestCreateDispatcherPositive(unittest.IsolatedAsyncioTestCase):
             subtest_counter += 1
             with self.subTest(msg=f"Failure! Subtest {subtest_counter} is stopped!",
                               pattern=(test_key, test_value)):
-                self.assertEqual(
-                    first=workflow.get(test_key),
-                    second=test_value
-                )
+                self.assertEqual(first=workflow.get(test_key),
+                                 second=test_value)
 
 
 # _____________________________________________________________________________
@@ -139,10 +137,8 @@ class TestCreateBotPositive(unittest.IsolatedAsyncioTestCase):
         expected_parse_mode = ParseMode.MARKDOWN
 
         # Operate
-        bot: aiogram.Bot = await self.tested_function(
-            api_token=self._bot_api_token,
-            parse_mode=expected_parse_mode
-        )
+        bot: aiogram.Bot = await self.tested_function(api_token=self._bot_api_token,
+                                                      parse_mode=expected_parse_mode)
 
         # Check
         bot_parse_mode: Optional[str] = bot.default.parse_mode
