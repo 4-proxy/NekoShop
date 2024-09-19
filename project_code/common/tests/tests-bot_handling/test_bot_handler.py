@@ -11,14 +11,14 @@ Apache license, version 2.0 (Apache-2.0 license)
 __all__: list[str] = []
 
 __author__ = "4-proxy"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 import unittest
 
 import aiogram
 import asyncio
 
-from bot_handling import bot_handler
+from common.bot_handling import bot_handler
 
 from typing import Dict, Any, Optional
 

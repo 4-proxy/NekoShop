@@ -6,3 +6,4 @@ MainDataBaseModel.mwb.bak
 .venv
 config.py
 project_config.json
+.coverage

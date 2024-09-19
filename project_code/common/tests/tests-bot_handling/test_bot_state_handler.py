@@ -9,21 +9,20 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 import unittest
 
 import unittest.mock as UnitMock
 
-from ...bot_handling import bot_state_handler
+from common.bot_handling import bot_state_handler
+from common.workflow_intermediary import WorkflowIntermediary
 
 
 # _____________________________________________________________________________
 class TestBotStateHandler(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        from ...workflow_intermediary import WorkflowIntermediary  # Heavy dependence
-
         super().setUpClass()
 
         cls._WorkflowData = WorkflowIntermediary

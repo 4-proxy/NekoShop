@@ -8,11 +8,11 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 import unittest
 
-from ...external_handling import json_handler
+from common.external_handling import json_handler
 
 from typing import Dict
 
