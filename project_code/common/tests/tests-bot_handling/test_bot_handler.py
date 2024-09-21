@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 
 """
-Module `test-bot_handler`, a set of test cases used to control the performance
+Module `test_bot_handler`, a set of test cases used to control the performance
 and quality of the `bot_handler` module components.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
 """
 
-__all__: list[str] = []
-
 __author__ = "4-proxy"
-__version__ = "1.0.2"
+__version__ = "1.1.0"
 
 import unittest
 
@@ -32,7 +30,6 @@ class TestCreateDispatcherPositive(unittest.IsolatedAsyncioTestCase):
     # -------------------------------------------------------------------------
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
-
         self.tested_function = bot_handler.create_dispatcher
 
     # -------------------------------------------------------------------------
@@ -44,41 +41,40 @@ class TestCreateDispatcherPositive(unittest.IsolatedAsyncioTestCase):
         await self.tested_function()
 
     # -------------------------------------------------------------------------
-    async def test_returned_object_is_aiogram_Dispatcher(self) -> None:
+    async def test_returns_aiogram_Dispatcher(self) -> None:
         # Build
         dispatcher: aiogram.Dispatcher = await self.tested_function()
+        expected_type = aiogram.Dispatcher
 
         # Check
         self.assertIsInstance(
             obj=dispatcher,
-            cls=aiogram.Dispatcher,
+            cls=expected_type,
             msg="Failure! Inspected object is not instance of aiogram.Dispatcher!"
         )
 
     # -------------------------------------------------------------------------
-    async def test_accept_kwargs_into_workflow_data(self) -> None:
+    async def test_accepts_kwargs_into_workflow_data(self) -> None:
         from random import randint
 
         # Build
-        test_data: Dict[str, Any] = {
+        expected_data: Dict[str, Any] = {
             "author_name": "4-proxy",
             "debug_mode": True,
             "random_int_number": randint(a=0, b=999)
         }
 
         # Operate
-        dispatcher: aiogram.Dispatcher = await self.tested_function(**test_data)
+        dispatcher: aiogram.Dispatcher = await self.tested_function(**expected_data)
 
         # Check
         workflow: Dict[str, Any] = dispatcher.workflow_data
 
-        subtest_counter: int = 0
-        for test_key, test_value in test_data.items():
-            subtest_counter += 1
-            with self.subTest(msg=f"Failure! Subtest {subtest_counter} is stopped!",
-                              pattern=(test_key, test_value)):
-                self.assertEqual(first=workflow.get(test_key),
-                                 second=test_value)
+        self.assertDictEqual(
+            d1=workflow,
+            d2=expected_data,
+            msg="Failure! The contents of inspected dictionary didn't match the expected!"
+        )
 
 
 # _____________________________________________________________________________
@@ -88,13 +84,11 @@ class TestCreateBotPositive(unittest.IsolatedAsyncioTestCase):
         from .test_data.bot_token import TOKEN
 
         super().setUpClass()
-
         cls._bot_api_token: str = TOKEN
 
     # -------------------------------------------------------------------------
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
-
         self.tested_function = bot_handler.create_bot
 
     # -------------------------------------------------------------------------
@@ -102,14 +96,15 @@ class TestCreateBotPositive(unittest.IsolatedAsyncioTestCase):
         await self.tested_function(api_token=self._bot_api_token)
 
     # -------------------------------------------------------------------------
-    async def test_returned_object_is_aiogram_Bot(self) -> None:
+    async def test_returns_aiogram_Bot(self) -> None:
         # Build
         bot: aiogram.Bot = await self.tested_function(api_token=self._bot_api_token)
+        expected_type = aiogram.Bot
 
         # Check
         self.assertIsInstance(
             obj=bot,
-            cls=aiogram.Bot,
+            cls=expected_type,
             msg="Failure! Inspected object is not instance of aiogram.Bot!"
         )
 
@@ -130,7 +125,7 @@ class TestCreateBotPositive(unittest.IsolatedAsyncioTestCase):
         )
 
     # -------------------------------------------------------------------------
-    async def test_function_accept_another_parse_mode(self) -> None:
+    async def test_accepts_custom_parse_mode(self) -> None:
         from aiogram.enums import ParseMode
 
         # Build
@@ -152,18 +147,12 @@ class TestCreateBotPositive(unittest.IsolatedAsyncioTestCase):
 
 # _____________________________________________________________________________
 class TestCreateBotNegative(unittest.IsolatedAsyncioTestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        super().setUpClass()
-
-    # -------------------------------------------------------------------------
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
-
         self.tested_function = bot_handler.create_bot
 
     # -------------------------------------------------------------------------
-    async def test_invalid_api_token_format_raise_TokenValidationError(
+    async def test_invalid_api_token_format_raises_TokenValidationError(
             self) -> None:
         """
         This test ensures the format of the API token string is correct/valid.
@@ -179,7 +168,6 @@ class TestCreateBotNegative(unittest.IsolatedAsyncioTestCase):
 
         # Check
         with self.assertRaises(expected_exception=TokenValidationError):
-
             # Operate
             await self.tested_function(api_token=invalid_api_token)
 
@@ -191,14 +179,12 @@ class TestRunBotPositive(unittest.IsolatedAsyncioTestCase):
         from .test_data.bot_token import TOKEN
 
         super().setUpClass()
-
         cls._bot_api_token: str = TOKEN
         cls._invalid_api_token: str = "0000:xxxx"
 
     # -------------------------------------------------------------------------
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
-
         self.tested_function = bot_handler.run_bot
 
     # -------------------------------------------------------------------------
@@ -211,13 +197,12 @@ class TestRunBotPositive(unittest.IsolatedAsyncioTestCase):
             # Check
             with self.assertRaises(expected_exception=asyncio.TimeoutError):
                 async with asyncio.timeout(delay=test_delay):
-
                     # Operate
                     await self.tested_function(bot=test_bot,
                                                dispatcher=test_dispatcher)
 
     # -------------------------------------------------------------------------
-    async def test_function_accept_aiogram_Bot_and_Dispatcher_as_key_parameters(
+    async def test_accepts_aiogram_Bot_and_Dispatcher_as_key_parameters(
             self) -> None:
         # Build
         bot = aiogram.Bot(token=self._invalid_api_token)
@@ -225,7 +210,6 @@ class TestRunBotPositive(unittest.IsolatedAsyncioTestCase):
 
         # Check
         with self.assertRaises(expected_exception=TypeError):
-
             # Operate
             await self.tested_function(bot, dispatcher)  # type: ignore
 
@@ -235,17 +219,15 @@ class TestRunBotNegative(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-
         cls._invalid_api_token = "0000:xxxx"
 
     # -------------------------------------------------------------------------
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
-
         self.tested_function = bot_handler.run_bot
 
     # -------------------------------------------------------------------------
-    async def test_invalid_api_token_raise_TelegramUnauthorizedError(
+    async def test_invalid_api_token_raises_TelegramUnauthorizedError(
             self) -> None:
         from aiogram.exceptions import TelegramUnauthorizedError
 
@@ -255,7 +237,6 @@ class TestRunBotNegative(unittest.IsolatedAsyncioTestCase):
 
         # Check
         with self.assertRaises(expected_exception=TelegramUnauthorizedError):
-
             # Operate
             await self.tested_function(bot=test_bot,
                                        dispatcher=test_dispatcher)
