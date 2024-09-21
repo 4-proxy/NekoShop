@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 """
-description
+Module `test_bot_config_handler`, a set of test cases used to control the performance
+and quality of the `bot_config_handler` module components.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 import unittest
 
@@ -21,16 +22,17 @@ from typing import Tuple
 class TestBotConfig(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
-
         self.tested_class = bot_config_handler.BotConfig
 
     # -------------------------------------------------------------------------
-    def test_attempt_to_create_instance_raise_TypeError(self) -> None:
-        with self.assertRaises(TypeError):
+    def test_instance_creation_raises_TypeError(self) -> None:
+        # Check
+        with self.assertRaises(expected_exception=TypeError):
+            # Operate
             self.tested_class()
 
     # -------------------------------------------------------------------------
-    def test_has_expected_fields(self) -> None:
+    def test_expected_fields_are_present(self) -> None:
         # Build
         expected_fields: Tuple[str, ...] = (
             "API_TOKEN", "OWNER_CHAT_ID", "DEBUG"

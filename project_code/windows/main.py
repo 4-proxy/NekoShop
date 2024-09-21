@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 
 """
-description
+This script is used to launch the Telegram bot and all relevant components.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
 """
 
-__all__: list[str] = []
-
 __author__ = "4-proxy"
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 import aiogram
 
@@ -34,13 +32,13 @@ FILEPATH_TO_PROJECT_CONFIG: str = os.path.join(
 async def configure_BotConfig() -> None:
     from ..common.external_handling import json_handler
 
-    config_content: ContentJSON = json_handler.get_content_from_json(
+    project_config: ContentJSON = json_handler.get_content_from_json(
         filepath=FILEPATH_TO_PROJECT_CONFIG
     )
 
-    BotConfig.API_TOKEN = config_content["Bot"]["API_TOKEN"]
-    BotConfig.OWNER_CHAT_ID = config_content["Bot"]["OWNER_CHAT_ID"]
-    BotConfig.DEBUG = config_content["Bot"]["DEBUG"]
+    BotConfig.API_TOKEN = project_config["Bot"]["API_TOKEN"]
+    BotConfig.OWNER_CHAT_ID = project_config["Bot"]["OWNER_CHAT_ID"]
+    BotConfig.DEBUG = project_config["Bot"]["DEBUG"]
 
 
 # -----------------------------------------------------------------------------
