@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
 
 """
-The `bot_handler` module is used for processing, including setting up the necessary components,
-to run the Telegram bot.
+The `bot_handler` module is used for processing,
+including setting up the necessary components, to run the Telegram bot.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
 """
 
-__all__: list[str] = ["create_dispatcher", "create_bot", "run_bot"]
+__all__: list[str] = [
+    "create_dispatcher",
+    "create_bot",
+    "run_bot"
+]
 
 __author__ = "4-proxy"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 from aiogram import Dispatcher, Bot
 
@@ -53,7 +57,8 @@ async def create_bot(api_token: str,
 
 
 # ----------------------------------------------------------------------------
-async def run_bot(*, bot: Bot, dispatcher: Dispatcher) -> None:
+async def run_bot(*, bot: Bot,
+                  dispatcher: Dispatcher) -> None:
     """run_bot runs the bot and starts listening for updates.
 
     Args:
