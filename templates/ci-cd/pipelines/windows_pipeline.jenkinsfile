@@ -1,7 +1,7 @@
 // author: 4-proxy
-// version: 0.1.0
+// version: 1.0.0
 
-// Requirements for agent components: openjdk21, git.
+// Requirements for agent components: openjdk21, git, python.
 
 pipeline{
 
@@ -22,7 +22,7 @@ pipeline{
                     @echo off
                     for /f "delims=" %%i in ('ver') do set version=%%i
 
-                    echo Agent OS Info:
+                    echo Agent OS Info
                     echo Host: %COMPUTERNAME%
                     echo Username: %USERNAME%
                     echo System: %version% %OS% %PROCESSOR_ARCHITECTURE% %NUMBER_OF_PROCESSORS%
@@ -49,6 +49,7 @@ pipeline{
                 bat '''
                     java --version
                     git --version
+                    python --version
                 '''
             }
 
@@ -67,15 +68,13 @@ pipeline{
         stage('GitHub Clone') {
             environment {
                 GITHUB_URL = 'https://github.com/4-proxy/NekoShop.git'
-                BRANCH_NAME = 'windows'
+                BRANCH_NAME = 'windows-dev'
             }
 
             steps {
                 echo '==========GitHub Clone=========='
 
-                bat '''
-                    git clone --single-branch --branch %BRANCH_NAME% --depth 1 %GITHUB_URL% .
-                '''
+                bat 'git clone --single-branch --branch %BRANCH_NAME% --depth 1 %GITHUB_URL% .'
 
                 bat 'dir /q'
             }
@@ -99,6 +98,31 @@ pipeline{
 
             steps {
                 echo '==========SetUp Configuration=========='
+
+                // Transfer configuration files
+                withCredentials([file(credentialsId: 'project_config_windows', variable: 'ProjectConfigFile')]) {
+                    bat 'move %ProjectConfigFile% ./project_code/windows/'
+                }
+
+                withCredentials([file(credentialsId: 'bot_token', variable: 'TestBotToken')]) {
+                    bat 'move %TestBotToken% ./project_code/common/tests/tests-bot_handling/test_data/'
+                }
+
+                // SetUp environment
+                script {
+                    powershell('''
+                    python -m venv .venv
+
+                    Set-ExecutionPolicy Bypass -Scope Process
+
+                    & ./.venv/scripts/activate
+
+                    pip install -r ./project_code/windows/requirements.txt > $null
+
+                    pip list
+                    '''
+                    )
+                }
             }
 
             post {
@@ -115,6 +139,26 @@ pipeline{
         stage('Check Configuration') {
             steps {
                 echo '==========Check Configuration=========='
+
+                // project_config.json
+                script {
+                    def filePath = './project_code/windows/project_config.json'
+                    if (fileExists(filePath)) {
+                        echo 'project_config.json is exist!'
+                    } else {
+                        error 'project_config.json not found, uses ${filePath}!'
+                    }
+                }
+
+                // bot_token.py
+                script {
+                    def filePath = './project_code/common/tests/tests-bot_handling/test_data/bot_token.py'
+                    if (fileExists(filePath)) {
+                        echo 'bot_token.py is exist!'
+                    } else {
+                        error 'bot_token.py not found, uses ${filePath}!'
+                    }
+                }
             }
 
             post {
@@ -134,6 +178,21 @@ pipeline{
                 stage('Auto Testing') {
                     steps {
                         echo '==========Auto Testing=========='
+
+                        script {
+                            powershell('''
+                            Set-ExecutionPolicy Bypass -Scope Process
+
+                            & ./.venv/scripts/activate
+
+                            cd ./project_code
+
+                            coverage run -m unittest discover -s ./common/tests -p "test_*.py"
+
+                            coverage report
+                            '''
+                            )
+                        }
                     }
 
                     post {
@@ -169,6 +228,21 @@ pipeline{
         stage('Deploy Code') {
             steps {
                 echo '==========Deploy Code=========='
+
+                script {
+                    powershell('''
+                    Set-ExecutionPolicy Bypass -Scope Process
+
+                    & ./.venv/scripts/activate
+
+                    $process = Start-Process python -ArgumentList "-m project_code.windows.main" -PassThru
+
+                    Start-Sleep -Seconds 15
+
+                    Stop-Process -Id $process.Id -Force
+                    '''
+                    )
+                }
             }
         }
 
