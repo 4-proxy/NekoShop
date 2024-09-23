@@ -9,7 +9,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "1.0.2"
+__version__ = "1.1.0"
 
 import unittest
 
@@ -69,3 +69,56 @@ class TestBotStateHandler(unittest.IsolatedAsyncioTestCase):
         # Check
         test_bot.send_message.assert_called_once_with(chat_id=expected_chat_id,
                                                       text=expected_message_text)
+
+    # -------------------------------------------------------------------------
+    async def test_logger_name_is_module_name(self) -> None:
+        # Build
+        expected_logger_name: str = bot_state_handler.__name__
+
+        logger_name: str = bot_state_handler.logger.name
+
+        # Check
+        self.assertEqual(first=logger_name,
+                         second=expected_logger_name)
+
+    # -------------------------------------------------------------------------
+    @UnitMock.patch("aiogram.Bot", new_callable=UnitMock.AsyncMock)
+    @UnitMock.patch.object(target=bot_state_handler.logger,
+                           attribute="info", autospec=True)
+    async def test_logger_info_message_on_startup(self,
+                                                  mock_logger_info: UnitMock.MagicMock,
+                                                  MockBot: UnitMock.AsyncMock) -> None:
+        # Build
+        expected_message_text = "Bot is online!"
+        fake_bot: UnitMock.AsyncMock = MockBot.return_value
+        fake_chat_id = "987654321"
+
+        self._WorkflowData.current_bot = fake_bot
+        self._WorkflowData.owner_chat_id = fake_chat_id
+
+        # Operate
+        await self.tested_function_startup()
+
+        # Check
+        mock_logger_info.assert_called_once_with(expected_message_text)
+
+    # -------------------------------------------------------------------------
+    @UnitMock.patch("aiogram.Bot", new_callable=UnitMock.AsyncMock)
+    @UnitMock.patch.object(target=bot_state_handler.logger,
+                           attribute="info", autospec=True)
+    async def test_logger_info_message_on_shutdown(self,
+                                                   mock_logger_info: UnitMock.MagicMock,
+                                                   MockBot: UnitMock.AsyncMock) -> None:
+        # Build
+        expected_message_text = "Bot is shutdown!"
+        fake_bot: UnitMock.AsyncMock = MockBot.return_value
+        fake_chat_id = "987654321"
+
+        self._WorkflowData.current_bot = fake_bot
+        self._WorkflowData.owner_chat_id = fake_chat_id
+
+        # Operate
+        await self.tested_function_shutdown()
+
+        # Check
+        mock_logger_info.assert_called_once_with(expected_message_text)
