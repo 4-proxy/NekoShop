@@ -1,5 +1,5 @@
 // author: 4-proxy
-// version: 1.0.0
+// version: 1.1.0
 
 // Requirements for agent components: openjdk21, git, python.
 
@@ -235,7 +235,9 @@ pipeline{
 
                     & ./.venv/scripts/activate
 
-                    $process = Start-Process python -ArgumentList "-m project_code.windows.main" -PassThru
+                    cd ./project_code
+
+                    $process = Start-Process python -ArgumentList "-m windows.main" -PassThru
 
                     Start-Sleep -Seconds 15
 
