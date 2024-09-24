@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
 
 """
-description
+Module `test_logger_handler`, a set of test cases used to control the performance
+and quality of the `logger_handler` module components.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 import unittest
 
 import logging
 import os
 
-import common.external_handling.logger_handler as logger_handler
+from common.external_handling import logger_handler
 
 
 # _____________________________________________________________________________

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-description
+The `logger_handler` module is used to configure basic project logging.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
@@ -16,7 +16,7 @@ __all__: list[str] = [
 ]
 
 __author__ = "4-proxy"
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 import logging
 
