@@ -8,7 +8,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 
 import aiogram
 
@@ -74,6 +74,3 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         print("Bot is shutdown, manually!")
-
-    except Exception as error:
-        print(f"Bot is shutdown, unknown reason!\n{error}")

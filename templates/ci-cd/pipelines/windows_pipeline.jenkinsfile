@@ -1,5 +1,5 @@
 // author: 4-proxy
-// version: 1.1.0
+// version: 2.0.0
 
 // Requirements for agent components: openjdk21, git, python.
 
@@ -109,20 +109,18 @@ pipeline{
                 }
 
                 // SetUp environment
-                script {
-                    powershell('''
-                    python -m venv .venv
+                powershell('''
+                python -m venv .venv
 
-                    Set-ExecutionPolicy Bypass -Scope Process
+                Set-ExecutionPolicy Bypass -Scope Process
 
-                    & ./.venv/scripts/activate
+                & ./.venv/scripts/activate
 
-                    pip install -r ./project_code/windows/requirements.txt > $null
+                pip install -r ./project_code/windows/requirements.txt > $null
 
-                    pip list
-                    '''
-                    )
-                }
+                pip list
+                '''
+                )
             }
 
             post {
@@ -179,20 +177,17 @@ pipeline{
                     steps {
                         echo '==========Auto Testing=========='
 
-                        script {
-                            powershell('''
-                            Set-ExecutionPolicy Bypass -Scope Process
+                        powershell('''
+                        Set-ExecutionPolicy Bypass -Scope Process
 
-                            & ./.venv/scripts/activate
+                        & ./.venv/scripts/activate
 
-                            cd ./project_code
+                        cd ./project_code
 
-                            coverage run -m unittest discover -s ./common/tests -p "test_*.py"
+                        python -m unittest discover -s ./common/tests -p "test_*.py"
+                        '''
+                        )
 
-                            coverage report
-                            '''
-                            )
-                        }
                     }
 
                     post {
@@ -229,22 +224,20 @@ pipeline{
             steps {
                 echo '==========Deploy Code=========='
 
-                script {
-                    powershell('''
-                    Set-ExecutionPolicy Bypass -Scope Process
+                powershell('''
+                Set-ExecutionPolicy Bypass -Scope Process
 
-                    & ./.venv/scripts/activate
+                & ./.venv/scripts/activate
 
-                    cd ./project_code
+                cd ./project_code
 
-                    $process = Start-Process python -ArgumentList "-m windows.main" -PassThru
+                $process = Start-Process python -ArgumentList "-m windows.main" -PassThru
 
-                    Start-Sleep -Seconds 15
+                Start-Sleep -Seconds 15
 
-                    Stop-Process -Id $process.Id -Force
-                    '''
-                    )
-                }
+                Stop-Process -Id $process.Id -Force
+                '''
+                )
             }
         }
 

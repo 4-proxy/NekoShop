@@ -16,7 +16,7 @@ __all__: list[str] = [
 ]
 
 __author__ = "4-proxy"
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
 import logging
 
@@ -29,6 +29,12 @@ LOG_FILEPATH: str = os.path.join(LOG_DIR_NAME, LOG_FILENAME)
 
 LOG_MESSAGE_FORMAT: str = "%(asctime)s | %(levelname)s > %(message)s"
 LOG_DATE_FORMAT: str = "%Y-%m-%d %H:%M:%S"
+
+
+log_dir_is_exist: bool = os.path.exists(LOG_DIR_NAME)
+
+if log_dir_is_exist is False:
+    os.makedirs(name=LOG_DIR_NAME)
 
 
 logging.basicConfig(
