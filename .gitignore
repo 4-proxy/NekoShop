@@ -7,3 +7,5 @@ MainDataBaseModel.mwb.bak
 config.py
 project_config.json
 .coverage
+NekoShopApp.log
+.vscode

@@ -1,6 +1,6 @@
 # NekoShop
 
-![SocialPreview](/NekoShop_preview.jpg)
+![SocialPreview](/Project_preview.jpg)
 
 > **The project is a completely individual and non-commercial development.**  
 

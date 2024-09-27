@@ -9,15 +9,21 @@ Apache license, version 2.0 (Apache-2.0 license)
 
 __all__: list[str] = [
     "on_startup",
-    "on_shutdown"
+    "on_shutdown",
+    "logger"
 ]
 
 __author__ = "4-proxy"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 import aiogram
 
+import logging
+
 from ..workflow_intermediary import WorkflowIntermediary
+
+
+logger: logging.Logger = logging.getLogger(name=__name__)
 
 
 # -----------------------------------------------------------------------------
@@ -28,9 +34,12 @@ async def on_startup() -> None:
     """
     bot: aiogram.Bot = WorkflowIntermediary.current_bot
     chat_id: str = WorkflowIntermediary.owner_chat_id
+    message_text = "I'am wake up!"
+
+    logger.info(msg="Bot is online!")
 
     await bot.send_message(chat_id=chat_id,
-                           text="I'am wake up!")
+                           text=message_text)
 
 
 # -----------------------------------------------------------------------------
@@ -41,6 +50,9 @@ async def on_shutdown() -> None:
     """
     bot: aiogram.Bot = WorkflowIntermediary.current_bot
     chat_id: str = WorkflowIntermediary.owner_chat_id
+    message_text = "I'am go to sleep!"
+
+    logger.info(msg="Bot is shutdown!")
 
     await bot.send_message(chat_id=chat_id,
-                           text="I'am go to sleep!")
+                           text=message_text)
