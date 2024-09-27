@@ -8,15 +8,11 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __all__: list[str] = [
-    "LOG_FILENAME",
-    "LOG_DIR_NAME",
-    "LOG_FILEPATH",
-    "LOG_MESSAGE_FORMAT",
-    "LOG_DATE_FORMAT"
+    'create_log_directory_if_not_exists'
 ]
 
 __author__ = "4-proxy"
-__version__ = "0.3.0"
+__version__ = "1.0.0"
 
 import logging
 
@@ -27,19 +23,62 @@ LOG_FILENAME: str = "NekoShopApp.log"
 LOG_DIR_NAME: str = "logs"
 LOG_FILEPATH: str = os.path.join(LOG_DIR_NAME, LOG_FILENAME)
 
-LOG_MESSAGE_FORMAT: str = "%(asctime)s | %(levelname)s > %(message)s"
+LOG_MESSAGE_FORMAT: str = "%(asctime)s | %(levelname)s | %(name)s > %(message)s"
 LOG_DATE_FORMAT: str = "%Y-%m-%d %H:%M:%S"
 
 
-log_dir_is_exist: bool = os.path.exists(LOG_DIR_NAME)
+# -----------------------------------------------------------------------------
+def check_directory_exists(dirpath: str) -> bool:
+    """Check if a directory exists at the specified path.
 
-if log_dir_is_exist is False:
-    os.makedirs(name=LOG_DIR_NAME)
+    This function checks whether a directory exists at the given `dirpath`.
+    It uses the `os.path.isdir` method to determine if the path is a directory.
+
+    Args:
+        dirpath (str): The path of the directory to check.
+                       This should be a string representing the file system path
+
+    Returns:
+        bool: True if the directory exists, False otherwise.
+
+    Example:
+        >>> check_directory_exists('/path/to/directory')
+        True  # if the directory exists
+        False # if the directory does not exist
+    """
+    is_exists: bool = os.path.isdir(s=dirpath)
+
+    return is_exists
 
 
-logging.basicConfig(
-    filename=LOG_FILEPATH,
-    level=logging.NOTSET,
-    format=LOG_MESSAGE_FORMAT,
-    datefmt=LOG_DATE_FORMAT
-)
+# -----------------------------------------------------------------------------
+def create_log_directory_if_not_exists() -> None:
+    """Create a log directory if it does not already exist.
+
+    This function checks for the existence of the directory defined by the
+    constant `LOG_DIR_NAME`. If the directory does not exist, it will be created
+    using `os.makedirs`.
+
+    Raises:
+        OSError: If an error occurred while creating the directory, such as
+                 permission issues or invalid path.
+
+    Example:
+        >>> create_log_directory_if_not_exists()
+        # This will create the directory if it does not exist.
+    """
+    is_exists: bool = check_directory_exists(dirpath=LOG_DIR_NAME)
+
+    if is_exists is False:
+        os.makedirs(LOG_DIR_NAME)
+
+
+if __name__ != '__main__':
+    create_log_directory_if_not_exists()
+
+    logging.basicConfig(
+        filename=LOG_FILEPATH,
+        level=logging.NOTSET,
+        format=LOG_MESSAGE_FORMAT,
+        datefmt=LOG_DATE_FORMAT
+    )
