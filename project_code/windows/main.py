@@ -8,7 +8,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 
 import aiogram
 
@@ -18,7 +18,7 @@ from common.external_handling import logger_handler
 from common.bot_handling import bot_handler
 from common.bot_handling import bot_state_handler
 from common.workflow_intermediary import WorkflowIntermediary
-from common.external_handling.bot_config_handler import BotConfig
+from common.external_handling.bot_config_handler import BotConfigDTO
 
 from typing import NoReturn
 from common.external_handling.json_handler import ContentJSON
@@ -37,15 +37,15 @@ async def configure_BotConfig() -> None:
         filepath=FILEPATH_TO_PROJECT_CONFIG
     )
 
-    BotConfig.API_TOKEN = project_config["Bot"]["API_TOKEN"]
-    BotConfig.OWNER_CHAT_ID = project_config["Bot"]["OWNER_CHAT_ID"]
-    BotConfig.DEBUG = project_config["Bot"]["DEBUG"]
+    BotConfigDTO.API_TOKEN = project_config["Bot"]["API_TOKEN"]
+    BotConfigDTO.OWNER_CHAT_ID = project_config["Bot"]["OWNER_CHAT_ID"]
+    BotConfigDTO.DEBUG = project_config["Bot"]["DEBUG"]
 
 
 # -----------------------------------------------------------------------------
 async def configure_WorkflowIntermediary() -> None:
-    api_token: str = BotConfig.API_TOKEN
-    owner_chat_id: str = BotConfig.OWNER_CHAT_ID
+    api_token: str = BotConfigDTO.API_TOKEN
+    owner_chat_id: str = BotConfigDTO.OWNER_CHAT_ID
 
     WorkflowIntermediary.current_bot = await bot_handler.create_bot(api_token=api_token)
     WorkflowIntermediary.owner_chat_id = owner_chat_id

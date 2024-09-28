@@ -13,17 +13,14 @@ __all__: list[str] = [
 ]
 
 __author__ = "4-proxy"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 import json
 
-from typing import Dict, Any
+from typing import Dict, Any, NewType
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-class ContentJSON(Dict[str, Dict[str, Any]]):
-    """ContentJSON type describing the content of JSON file."""
-    pass
+ContentJSON = NewType('ContentJSON', Dict[str, Any])
 
 
 # -----------------------------------------------------------------------------
@@ -47,6 +44,4 @@ def get_content_from_json(filepath: str) -> ContentJSON:
     with open(file=filepath, mode='r') as json_file:
         file_content: Any = json.load(fp=json_file)
 
-    content: ContentJSON = ContentJSON(file_content)
-
-    return content
+    return ContentJSON(file_content)

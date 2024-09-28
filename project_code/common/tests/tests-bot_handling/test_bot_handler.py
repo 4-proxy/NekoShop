@@ -9,7 +9,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 import unittest
 
@@ -202,8 +202,7 @@ class TestRunBotPositive(unittest.IsolatedAsyncioTestCase):
                                                dispatcher=test_dispatcher)
 
     # -------------------------------------------------------------------------
-    async def test_accepts_aiogram_Bot_and_Dispatcher_as_key_parameters(
-            self) -> None:
+    async def test_aiogram_Bot_and_Dispatcher_is_only_key_params(self) -> None:
         # Build
         bot = aiogram.Bot(token=self._invalid_api_token)
         dispatcher = aiogram.Dispatcher()

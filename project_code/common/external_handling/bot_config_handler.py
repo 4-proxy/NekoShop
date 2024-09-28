@@ -8,10 +8,10 @@ Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
 """
 
-__all__: list[str] = ["BotConfig"]
+__all__: list[str] = ["BotConfigDTO"]
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 from dataclasses import dataclass
 
@@ -20,7 +20,7 @@ from typing import NoReturn
 
 # _____________________________________________________________________________
 @dataclass
-class BotConfig:
+class BotConfigDTO:
     """
     Data structure for storing bot configuration.
 
@@ -36,7 +36,7 @@ class BotConfig:
     OWNER_CHAT_ID: str
     DEBUG: bool
 
-    def __new__(cls) -> NoReturn:
+    def __init__(self, *args, **kwargs) -> NoReturn:
         """
         Prohibit the creation of instances of this class.
 

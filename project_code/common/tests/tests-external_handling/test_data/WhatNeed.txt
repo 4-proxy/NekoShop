@@ -1,2 +1,1 @@
-`valid_json_file.json` - `.json` file with test data.
 `invalid_json_file.json` - `.json` file with invalid data format.

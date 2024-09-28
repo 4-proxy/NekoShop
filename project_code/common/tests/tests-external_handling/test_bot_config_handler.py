@@ -9,7 +9,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 import unittest
 
@@ -22,7 +22,18 @@ from typing import Tuple
 class TestBotConfig(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
-        self.tested_class = bot_config_handler.BotConfig
+        self.tested_class = bot_config_handler.BotConfigDTO
+
+    # -------------------------------------------------------------------------
+    def test_is_dataclass(self) -> None:
+        from dataclasses import is_dataclass
+
+        # Operate
+        is_DTO: bool = is_dataclass(obj=self.tested_class)
+
+        # Check
+        self.assertTrue(expr=is_DTO,
+                        msg="The inspected class is not dataclass!")
 
     # -------------------------------------------------------------------------
     def test_instance_creation_raises_TypeError(self) -> None:
