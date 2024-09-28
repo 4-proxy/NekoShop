@@ -14,7 +14,7 @@ __all__: list[str] = [
 ]
 
 __author__ = "4-proxy"
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 import aiogram
 
@@ -35,8 +35,9 @@ async def on_startup() -> None:
     bot: aiogram.Bot = WorkflowIntermediary.current_bot
     chat_id: str = WorkflowIntermediary.owner_chat_id
     message_text = "I'am wake up!"
+    log_text_message = "Bot is online!"
 
-    logger.info(msg="Bot is online!")
+    logger.info(msg=log_text_message)
 
     await bot.send_message(chat_id=chat_id,
                            text=message_text)
@@ -51,8 +52,9 @@ async def on_shutdown() -> None:
     bot: aiogram.Bot = WorkflowIntermediary.current_bot
     chat_id: str = WorkflowIntermediary.owner_chat_id
     message_text = "I'am go to sleep!"
+    log_text_message = "Bot is shutdown!"
 
-    logger.info(msg="Bot is shutdown!")
+    logger.info(msg=log_text_message)
 
     await bot.send_message(chat_id=chat_id,
                            text=message_text)

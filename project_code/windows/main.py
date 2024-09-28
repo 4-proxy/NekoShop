@@ -8,7 +8,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "0.4.2"
+__version__ = "0.5.0"
 
 import aiogram
 
@@ -30,31 +30,38 @@ FILEPATH_TO_PROJECT_CONFIG: str = os.path.join(
 
 
 # -----------------------------------------------------------------------------
-async def configure_BotConfig() -> None:
+async def configure_BotConfig() -> BotConfigDTO:
     from common.external_handling import json_handler
 
     project_config: ContentJSON = json_handler.get_content_from_json(
         filepath=FILEPATH_TO_PROJECT_CONFIG
     )
 
-    BotConfigDTO.API_TOKEN = project_config["Bot"]["API_TOKEN"]
-    BotConfigDTO.OWNER_CHAT_ID = project_config["Bot"]["OWNER_CHAT_ID"]
-    BotConfigDTO.DEBUG = project_config["Bot"]["DEBUG"]
+    bot_config = BotConfigDTO(
+        api_token=project_config["Bot"]["API_TOKEN"],
+        owner_chat_id=project_config["Bot"]["OWNER_CHAT_ID"],
+        debug=project_config["Bot"]["DEBUG"]
+    )
+
+    return bot_config
 
 
 # -----------------------------------------------------------------------------
-async def configure_WorkflowIntermediary() -> None:
-    api_token: str = BotConfigDTO.API_TOKEN
-    owner_chat_id: str = BotConfigDTO.OWNER_CHAT_ID
+async def configure_WorkflowIntermediary(bot_config: BotConfigDTO) -> None:
+    api_token: str = bot_config.api_token
+    owner_chat_id: str = bot_config.owner_chat_id
 
-    WorkflowIntermediary.current_bot = await bot_handler.create_bot(api_token=api_token)
+    telegram_bot: aiogram.Bot = await bot_handler.create_bot(api_token=api_token)
+
+    WorkflowIntermediary.current_bot = telegram_bot
     WorkflowIntermediary.owner_chat_id = owner_chat_id
 
 
 # -----------------------------------------------------------------------------
 async def main() -> NoReturn:
-    await configure_BotConfig()
-    await configure_WorkflowIntermediary()
+    bot_config: BotConfigDTO = await configure_BotConfig()
+
+    await configure_WorkflowIntermediary(bot_config=bot_config)
 
     telegram_bot: aiogram.Bot = WorkflowIntermediary.current_bot
     telegram_dispatcher: aiogram.Dispatcher = await bot_handler.create_dispatcher()

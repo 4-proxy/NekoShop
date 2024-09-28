@@ -11,36 +11,22 @@ Apache license, version 2.0 (Apache-2.0 license)
 __all__: list[str] = ["BotConfigDTO"]
 
 __author__ = "4-proxy"
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 from dataclasses import dataclass
 
-from typing import NoReturn
-
 
 # _____________________________________________________________________________
-@dataclass
+@dataclass(frozen=True)
 class BotConfigDTO:
     """
     Data structure for storing bot configuration.
 
     Attributes:
-        API_TOKEN (str): API token for bot access.
-        OWNER_CHAT_ID (str): The chat identifier of the bot owner.
-        DEBUG (bool): Flag indicating whether debug mode is enabled.
-
-    Raises:
-        TypeError: Raises when trying to create an instance of the class.
+        api_token (str): API token for bot access.
+        owner_chat_id (str): The chat identifier of the bot owner.
+        debug (bool): Flag indicating whether debug mode is enabled.
     """
-    API_TOKEN: str
-    OWNER_CHAT_ID: str
-    DEBUG: bool
-
-    def __init__(self, *args, **kwargs) -> NoReturn:
-        """
-        Prohibit the creation of instances of this class.
-
-        Raises:
-            TypeError: Always raises when trying to create an instance.
-        """
-        raise TypeError("Creating instances of this class is inadmissible!")
+    api_token: str
+    owner_chat_id: str
+    debug: bool
