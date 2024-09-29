@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-The `logger_handler` module is used to configure basic project logging.
+The `logger_handler` module is responsible for configuring basic logging for the project.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
@@ -12,7 +12,7 @@ __all__: list[str] = [
 ]
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 import logging
 
@@ -40,11 +40,6 @@ def check_directory_exists(dirpath: str) -> bool:
 
     Returns:
         bool: True if the directory exists, False otherwise.
-
-    Example:
-        >>> check_directory_exists('/path/to/directory')
-        True  # if the directory exists
-        False # if the directory does not exist
     """
     is_exists: bool = os.path.isdir(s=dirpath)
 
@@ -62,10 +57,6 @@ def create_log_directory_if_not_exists() -> None:
     Raises:
         OSError: If an error occurred while creating the directory, such as
                  permission issues or invalid path.
-
-    Example:
-        >>> create_log_directory_if_not_exists()
-        # This will create the directory if it does not exist.
     """
     is_exists: bool = check_directory_exists(dirpath=LOG_DIR_NAME)
 

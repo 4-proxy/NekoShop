@@ -1,46 +1,33 @@
 # -*- coding: utf-8 -*-
 
 """
-The `bot_config_handler` module is used to process
-and present configuration for Telegram bot.
+The `bot_config_handler` module is responsible for processing
+and managing the configuration settings for a Telegram bot.
 
 Copyright 2024 4-proxy
 Apache license, version 2.0 (Apache-2.0 license)
 """
 
-__all__: list[str] = ["BotConfig"]
+__all__: list[str] = ["BotConfigDTO"]
 
 __author__ = "4-proxy"
-__version__ = "1.0.0"
+__version__ = "1.1.1"
 
 from dataclasses import dataclass
 
-from typing import NoReturn
-
 
 # _____________________________________________________________________________
-@dataclass
-class BotConfig:
-    """
-    Data structure for storing bot configuration.
+@dataclass(frozen=True)
+class BotConfigDTO:
+    """Data structure for storing and representing the configuration of a Telegram bot.
+
+    This class is immutable and contains essential attributes required for bot operation.
 
     Attributes:
-        API_TOKEN (str): API token for bot access.
-        OWNER_CHAT_ID (str): The chat identifier of the bot owner.
-        DEBUG (bool): Flag indicating whether debug mode is enabled.
-
-    Raises:
-        TypeError: Raises when trying to create an instance of the class.
+        api_token (str): The API token used for authenticating the bot with the Telegram API.
+        owner_chat_id (str): The unique identifier of the chat where the bot owner resides.
+        debug (bool): A flag indicating whether the bot is running in debug mode, which may enable additional logging or features.
     """
-    API_TOKEN: str
-    OWNER_CHAT_ID: str
-    DEBUG: bool
-
-    def __new__(cls) -> NoReturn:
-        """
-        Prohibit the creation of instances of this class.
-
-        Raises:
-            TypeError: Always raises when trying to create an instance.
-        """
-        raise TypeError("Creating instances of this class is inadmissible!")
+    api_token: str
+    owner_chat_id: str
+    debug: bool

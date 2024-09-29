@@ -8,37 +8,34 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __all__: list[str] = [
-    "get_content_from_json",
+    "parse_content_from_json",
     "ContentJSON"
 ]
 
 __author__ = "4-proxy"
-__version__ = "1.0.1"
+__version__ = "2.0.0"
 
 import json
 
-from typing import Dict, Any
+from typing import Dict, Any, NewType
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-class ContentJSON(Dict[str, Dict[str, Any]]):
-    """ContentJSON type describing the content of JSON file."""
-    pass
+ContentJSON = NewType('ContentJSON', Dict[str, Any])
 
 
 # -----------------------------------------------------------------------------
-def get_content_from_json(filepath: str) -> ContentJSON:
-    """get_content_from_json get JSON file content.
+def parse_content_from_json(filepath: str) -> ContentJSON:
+    """Parse content from a JSON file.
 
     This function reads a JSON file from the specified file path and
-    parses its content into a Python dictionary.
-    *The resulting dictionary is wrapped in a custom type `ContentJSON`.
+    parses its content into a Python dictionary. The resulting dictionary
+    is wrapped in a custom type `ContentJSON`.
 
     Args:
-        filepath (str): Path to `.json` file.
+        filepath (str): The path to the `.json` file to be read.
 
     Returns:
-        ContentJSON: `.json` file content.
+        ContentJSON: The parsed content of the `.json` file as a dictionary.
 
     Raises:
         FileNotFoundError: If the specified file does not exist.
@@ -47,6 +44,4 @@ def get_content_from_json(filepath: str) -> ContentJSON:
     with open(file=filepath, mode='r') as json_file:
         file_content: Any = json.load(fp=json_file)
 
-    content: ContentJSON = ContentJSON(file_content)
-
-    return content
+    return ContentJSON(file_content)
