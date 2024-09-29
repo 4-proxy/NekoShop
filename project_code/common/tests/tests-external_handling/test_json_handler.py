@@ -9,7 +9,7 @@ Apache license, version 2.0 (Apache-2.0 license)
 """
 
 __author__ = "4-proxy"
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 import unittest
 
@@ -50,7 +50,7 @@ class TestGetContentFromJsonPositive(unittest.TestCase):
         with open(file=self._tested_json_file_path, mode='w') as json_file:
             json.dump(obj=self._expected_file_data, fp=json_file)
 
-        self.tested_function = json_handler.get_content_from_json
+        self.tested_function = json_handler.parse_content_from_json
 
     # -------------------------------------------------------------------------
     def tearDown(self) -> None:
@@ -105,7 +105,7 @@ class TestGetContentFromJsonPositive(unittest.TestCase):
 class TestGetContentFromJsonNegative(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
-        self.tested_function = json_handler.get_content_from_json
+        self.tested_function = json_handler.parse_content_from_json
 
     # -------------------------------------------------------------------------
     def test_FileNotFoundError_when_file_does_not_exist(self) -> None:
