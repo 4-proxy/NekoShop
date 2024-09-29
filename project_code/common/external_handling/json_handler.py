@@ -13,13 +13,14 @@ __all__: list[str] = [
 ]
 
 __author__ = "4-proxy"
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 import json
 
 from typing import Dict, Any, NewType
 
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ContentJSON = NewType('ContentJSON', Dict[str, Any])
 
 
